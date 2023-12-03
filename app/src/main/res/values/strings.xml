@@ -5,4 +5,5 @@
     <string name="titulo">Título</string>
     <string name="salvar">Salvar</string>
     <string name="excluir">Excluir</string>
+    <string name="pesquisar">Pesquisar</string>
 </resources>

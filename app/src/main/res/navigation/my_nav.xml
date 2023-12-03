@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/listBooksFragment"
         android:name="br.edu.scl.ifsp.sdm.mybooks.ui.ListBooksFragment"
-        android:label="Livros"
+        android:label="Meus Livros"
         tools:layout="@layout/fragment_list_books">
         <action
             android:id="@+id/action_listBooksFragment_to_registerFragment"

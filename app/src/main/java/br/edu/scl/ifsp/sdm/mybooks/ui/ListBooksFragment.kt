@@ -2,9 +2,16 @@ package br.edu.scl.ifsp.sdm.mybooks.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.SearchView
+import androidx.core.view.MenuHost
+import androidx.core.view.MenuProvider
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelProvider
 import br.edu.scl.ifsp.sdm.mybooks.R
 import br.edu.scl.ifsp.sdm.mybooks.databinding.FragmentListBooksBinding
@@ -18,7 +25,7 @@ class ListBooksFragment : Fragment() {
     private var _binding: FragmentListBooksBinding? = null
     private val binding get() = _binding!!
     lateinit var bookAdapter: BookAdapter
-    lateinit var viewModel: BookViewModel
+    private lateinit var viewModel: BookViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,8 +38,38 @@ class ListBooksFragment : Fragment() {
         _binding = FragmentListBooksBinding.inflate(inflater, container, false)
         val root: View = binding.root
         setupClick()
-        setupAdapter()
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupAdapter()
+
+        val menuHost: MenuHost = requireActivity()
+
+        menuHost.addMenuProvider(object : MenuProvider {
+            override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+                menuInflater.inflate(R.menu.main_menu, menu)
+
+                val searchView = menu.findItem(R.id.action_search).actionView as SearchView
+                searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                    override fun onQueryTextSubmit(p0: String?): Boolean {
+                        TODO("Not yet implemented")
+                    }
+
+                    override fun onQueryTextChange(p0: String?): Boolean {
+                        bookAdapter.filter.filter(p0)
+                        return true
+                    }
+
+                })
+            }
+
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                TODO("Not yet implemented")
+            }
+        }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun setupClick() {
